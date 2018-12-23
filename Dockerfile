@@ -22,3 +22,10 @@ RUN mkdir mongo-cxx-driver && cd mongo-cxx-driver \
     && cmake $CMAKE_OPTIONS \
     && cmake --build build --target install \
     && cd .. && rm -rf mongo-cxx-driver
+
+RUN git clone --depth 1 --single-branch --branch release_40 https://github.com/llvm-mirror/llvm.git \
+    && git clone --depth 1 --single-branch --branch release_40 https://github.com/llvm-mirror/clang.git llvm/tools/clang \
+    && cd llvm \
+    && cmake -H. -Bbuild -GNinja -DCMAKE_INSTALL_PREFIX=/opt/wasm -DLLVM_TARGETS_TO_BUILD= -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=WebAssembly -DCMAKE_BUILD_TYPE=Release  \
+    && cmake --build build --target install \
+    && cd .. && rm -rf llvm
