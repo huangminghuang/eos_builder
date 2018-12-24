@@ -1,6 +1,6 @@
 FROM ubuntu
 RUN apt-get update \
-    && apt-get install -y cmake make libbz2-dev libssl-dev \
+    && apt-get install -y clang-4.0 lldb-4.0 libclang-4.0-dev cmake make libbz2-dev libssl-dev \
 	     libgmp3-dev build-essential libicu-dev python2.7-dev python3-dev \
        libtool curl zlib1g-dev doxygen graphviz ninja-build ccache git \
     && rm -rf /var/lib/apt/lists/*
