@@ -1,8 +1,9 @@
 FROM ubuntu
 RUN apt-get update \
-    && apt-get install -y clang-4.0 lldb-4.0 libclang-4.0-dev cmake make automake libbz2-dev libssl-dev \
-	     libgmp3-dev autotools-dev build-essential libicu-dev python2.7-dev python3-dev \
-       autoconf libtool curl zlib1g-dev doxygen graphviz software-properties-common ninja-build ccache git 
+    && apt-get install -y cmake make libbz2-dev libssl-dev \
+	     libgmp3-dev build-essential libicu-dev python2.7-dev python3-dev \
+       libtool curl zlib1g-dev doxygen graphviz ninja-build ccache git \
+    && rm -rf /var/lib/apt/lists/*
   
 ARG LIBMONGOC_VERSION=1.10.2
 ARG LIBMONGOCXX_VERSION=3.3.0
@@ -25,3 +26,12 @@ RUN mkdir mongo-cxx-driver && cd mongo-cxx-driver \
     && cmake $CMAKE_OPTIONS -DBUILD_SHARED_LIBS=OFF \
     && cmake --build build --target install \
     && cd .. && rm -rf mongo-cxx-driver
+
+# It is impossible to build clang with WASM support in free CI services. Just add the binary here. The result should be equivelent to the following commented RUN command.
+RUN curl -L https://storage.googleapis.com/oci-grandeos/wasm-ubuntu-18.04.tar.bz2 | tar -xj
+# RUN git clone --depth 1 --single-branch --branch release_40 https://github.com/llvm-mirror/llvm.git \
+#     && git clone --depth 1 --single-branch --branch release_40 https://github.com/llvm-mirror/clang.git llvm/tools/clang \
+#     && cd llvm \
+#     && cmake -H. -Bbuild -GNinja -DCMAKE_INSTALL_PREFIX=/opt/wasm -DLLVM_TARGETS_TO_BUILD= -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=WebAssembly -DCMAKE_BUILD_TYPE=Release  \
+#     && cmake --build build --target install \
+#     && cd .. && rm -rf llvm
