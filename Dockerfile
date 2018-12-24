@@ -2,10 +2,7 @@ FROM ubuntu
 RUN apt-get update \
     && apt-get install -y clang-4.0 lldb-4.0 libclang-4.0-dev cmake make automake libbz2-dev libssl-dev \
 	     libgmp3-dev autotools-dev build-essential libicu-dev python2.7-dev python3-dev \
-       autoconf libtool curl zlib1g-dev doxygen graphviz software-properties-common ninja-build ccache git \
-    && add-apt-repository -y ppa:mhier/libboost-latest \
-    && apt-get update \
-    && apt-get install -y libboost1.67-dev
+       autoconf libtool curl zlib1g-dev doxygen graphviz software-properties-common ninja-build ccache git 
   
 ARG LIBMONGOC_VERSION=1.10.2
 ARG LIBMONGOCXX_VERSION=3.3.0
@@ -13,7 +10,6 @@ ARG CMAKE_OPTIONS="-H. -Bbuild -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTA
 
 RUN mkdir boost && cd boost \
     && curl -L https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.bz2 | tar --strip-components=1 -xj \
-    && cd boost \
     && ./bootstrap.sh --prefix=/usr/local \
     && ./b2 -j4 link=static install \
     && cd .. && rm -rf boost
