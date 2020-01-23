@@ -16,7 +16,7 @@ RUN curl -LO https://dl.bintray.com/boostorg/release/$BOOST_VERSION/source/$BOOS
     cd $BOOST_ID && \
     ./bootstrap.sh --prefix=/usr/local && \
     ./b2 link=static threading=multi --with-iostreams --with-date_time --with-filesystem --with-system --with-program_options --with-chrono --with-test -q -j$(nproc) install && \
-    cd .. && rm -rf $BOOST_ID
+    cd .. && rm -rf $BOOST_ID && rm $BOOST_ID.tar.bz2
     
 RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100 \
   && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-8 100
